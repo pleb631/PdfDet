@@ -1,0 +1,13 @@
+paddlepaddle==2.6.0
+tqdm
+opencv-python
+PyMuPDF==1.23.26
+pyyaml
+requests
+six
+scipy
+scikit-learn
+pycocotools
+pandas
+shapely
+cnstd
