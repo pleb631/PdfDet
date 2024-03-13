@@ -30,14 +30,13 @@ class base_module(metaclass=ABCMeta):
 
     def single_predict(self, *args, **kwargs):
 
-        preds = self.predict(*args, **kwargs)
+        preds,image = self.predict(*args, **kwargs)
         result = []
         for p in preds:
-            label, box, score, image = (
+            label, box, score = (
                 p.get("type", None),
                 p.get("box", None),
                 p.get("score", None),
-                p.get("image", None),
             )
             result.append(Bbox.from_xyxy(*box, label, score))
 

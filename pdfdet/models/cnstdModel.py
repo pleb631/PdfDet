@@ -31,8 +31,7 @@ class cnstd_model(base_module):
                 "type": box["type"],
                 "box": box["box"][[0, 2]].reshape(-1).tolist(),
                 "score": box["score"],
-                "image": image,
             }
             result.append(b)
 
-        return result
+        return (result, image)

@@ -59,10 +59,10 @@ class paddle_cdla_model(base_module):
             cls, score, x1, y1, x2, y2 = item
             x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
             cls = self.labels[int(cls)]
-            b = {"type": cls, "box": [x1, y1, x2, y2], "score": score, "image": image}
+            b = {"type": cls, "box": [x1, y1, x2, y2], "score": score}
             result.append(b)
 
-        return result
+        return (result, image)
 
     def predict_from_path(self, image):
         with tempfile.NamedTemporaryFile(

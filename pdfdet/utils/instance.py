@@ -64,8 +64,10 @@ class Bbox:
     @staticmethod
     def ltrb2xywh(x):
         y = np.copy(x)
-        y[..., 0] = x[..., 0] + x[..., 2] / 2  # center x
-        y[..., 1] = x[..., 1] + x[..., 3] / 2  # center y
+        y[..., 0] = (x[..., 0] + x[..., 2]) / 2  # center x
+        y[..., 1] = (x[..., 1] + x[..., 3]) / 2  # center y
+        y[..., 2] = x[..., 2] - x[..., 0]
+        y[..., 3] = x[..., 3] - x[..., 1]
         return y
 
     @staticmethod
@@ -75,8 +77,8 @@ class Bbox:
         dh = x[..., 3] / 2  # half-height
         y[..., 0] = x[..., 0] - dw  # top left x
         y[..., 1] = x[..., 1] - dh  # top left y
-        y[..., 2] = x[..., 0] + dw  # bottom right x
-        y[..., 3] = x[..., 1] + dh  # bottom right y
+        y[..., 2] = y[..., 0] + x[..., 2]  # bottom right x
+        y[..., 3] = y[..., 1] + x[..., 3]  # bottom right y
         return y
 
     @staticmethod

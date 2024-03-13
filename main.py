@@ -6,6 +6,7 @@ root = os.path.dirname(__file__)
 
 
 from pdfdet import uni_model
+from pdfdet.utils.instance import Layer, Document
 
 
 def parse_args():
@@ -35,13 +36,22 @@ def main():
     args = parse_args()
     model = uni_model(name=args.model)
     doc = model(path=args.path)
-    layers = sorted(doc.layers, key=lambda x: int(x))
-    for i in layers:
-        layer = getattr(doc, i)
-        im = layer.imshow()
+    if isinstance(doc, Layer):
+        im = doc.imshow()
         cv2.imshow("im", im)
         cv2.waitKey(0)
-    cv2.destroyAllWindows()
+        cv2.destroyAllWindows()
+        
+    elif isinstance(doc, Document):
+        layers = sorted(doc.layers, key=lambda x: int(x))
+        for i in layers:
+            layer = getattr(doc, i)
+            im = layer.imshow()
+            cv2.imshow("im", im)
+            cv2.waitKey(0)
+        cv2.destroyAllWindows()
+        
+        
     content = doc.to_json()
 
 
