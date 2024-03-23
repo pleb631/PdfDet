@@ -7,8 +7,7 @@ import sys
 parent_path = os.path.abspath(os.path.join(__file__, *([".."] * 1)))
 sys.path.insert(0, parent_path)
 
-from .paddle_cdla import paddle_cdla_model,Trainer
-from ppdet.core.workspace import load_config
+from .paddle_cdla import paddle_cdla_model
 
 
 
@@ -20,10 +19,8 @@ class paddle_pub_model(paddle_cdla_model):
         )
         weight = (
             os.path.dirname(__file__)
-            + r"/weights/picodet_lcnet_x2_5_layout/model.pdparams"
+            + r"/weights/picodet_lcnet_x1_0_fgd_layout_pub.pdparams"
         )
-        cfg = load_config(config)
-        trainer = Trainer(cfg, mode="test")
-        trainer.load_weights(weight)
-        self.trainer = trainer
         self.labels = {0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"}
+
+        self.init(config, weight)

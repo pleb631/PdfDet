@@ -6,27 +6,28 @@ import os
 import cv2
 import sys
 import numpy as np
+from ppdet.core.workspace import load_config
+from ppdet.engine import Trainer as Trainer1
+from ppdet.core.workspace import create
+from pathlib import Path
 
 parent_path = os.path.abspath(os.path.join(__file__, *([".."] * 1)))
 sys.path.insert(0, parent_path)
 
 
 from pdfdet.models.baseModel import base_module
-from ppdet.core.workspace import load_config
-from ppdet.engine import Trainer as Trainer1
-from ppdet.core.workspace import create
+from pdfdet.utils.utils import safe_download
 
 class Trainer(Trainer1):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def predict(self,
-                images):
+    def predict(self, images):
 
         self.dataset.set_images(images)
-        loader = create('TestReader')(self.dataset, 0)
+        loader = create("TestReader")(self.dataset, 0)
 
-        # Run Infer 
+        # Run Infer
         self.model.eval()
         results = []
         for step_id, data in enumerate(loader):
@@ -34,12 +35,24 @@ class Trainer(Trainer1):
             outs = self.model(data)
 
             for key, value in outs.items():
-                if hasattr(value, 'numpy'):
+                if hasattr(value, "numpy"):
                     outs[key] = value.numpy()
             results.append(outs)
 
         return results
 
+
+def attempt_download(weight):
+    name = Path(weight).stem
+    if name=='picodet_lcnet_x1_0_fgd_layout_cdla':
+        url='https://github.com/pleb631/PdfDet/releases/download/v0.0.1/picodet_lcnet_x1_0_fgd_layout_cdla.pdparams'
+    elif name=='picodet_lcnet_x1_0_fgd_layout_pub':
+            url = 'https://github.com/pleb631/PdfDet/releases/download/v0.0.1/picodet_lcnet_x1_0_fgd_layout_pub.pdparams'
+    else:
+        raise ValueError()
+    safe_download(file=weight, url=url)
+    
+    
 class paddle_cdla_model(base_module):
     def __init__(self, *args, **kwargs) -> None:
         config = (
@@ -48,12 +61,9 @@ class paddle_cdla_model(base_module):
         )
         weight = (
             os.path.dirname(__file__)
-            + r"/weights/picodet_lcnet_x1_0_fgd_layout_cdla/model.pdparams"
+            + r"/weights/picodet_lcnet_x1_0_fgd_layout_cdla.pdparams"
         )
-        cfg = load_config(config)
-        trainer = Trainer(cfg, mode="test")
-        trainer.load_weights(weight)
-        self.trainer = trainer
+
         self.labels = {
             0: "Text",
             1: "Title",
@@ -66,6 +76,14 @@ class paddle_cdla_model(base_module):
             8: "Reference",
             9: "Equation",
         }
+        self.init(config, weight)
+
+    def init(self, config, weight):
+        cfg = load_config(config)
+        trainer = Trainer(cfg, mode="test")
+        attempt_download(weight)
+        trainer.load_weights(weight)
+        self.trainer = trainer
 
     def predict(self, path=None, image=None, *args, **kwargs):
         assert path is not None or image is not None
