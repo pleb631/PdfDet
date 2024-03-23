@@ -7,11 +7,11 @@ import sys
 parent_path = os.path.abspath(os.path.join(__file__, *([".."] * 1)))
 sys.path.insert(0, parent_path)
 
-from .paddle_cdla import paddle_cdla_model
+from .paddle_cdla import paddle_cdla
 
 
 
-class paddle_pub_model(paddle_cdla_model):
+class paddle_pub(paddle_cdla):
     def __init__(self, *args, **kwargs) -> None:
         config = (
             os.path.dirname(__file__)

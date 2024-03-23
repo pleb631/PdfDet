@@ -163,3 +163,4 @@ pnnx*
 
 # dataset cache 
 *.cache
+result/

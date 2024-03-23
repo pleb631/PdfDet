@@ -21,9 +21,9 @@ python main.py
 
 | 模型              | 来源   | 关联数据集        |map50:95                           | p      | r      |
 | ----------------- | ------ | ----------------- |---------------------------------- | ------ | ------ |
-| paddle_pub_model  | paddle | PubLayNet（英文） |0.0486 | 0.1133 | 0.1000 |
-| paddle_cdla_model | paddle | CDLA（中文）      |0.5968                             | 0.5852 | 0.6246 |
-| cnstd_model       | cnstd  | CDLA              | 0.5034                             | 0.6278 | 0.5651 |
+| paddle_pub  | paddle | PubLayNet（英文） |0.0486 | 0.1133 | 0.1000 |
+| paddle_cdla | paddle | CDLA（中文）      |0.5717                             | 0.5853 | 0.6248 |
+| cnstd_yolov7       | cnstd  | CDLA              | 0.5034                             | 0.6278 | 0.5651 |
 
 [测试集](https://github.com/Ontheroad123/Layout-Analysis/tree/main/layout_modify)
 

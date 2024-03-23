@@ -53,7 +53,7 @@ def attempt_download(weight):
     safe_download(file=weight, url=url)
     
     
-class paddle_cdla_model(base_module):
+class paddle_cdla(base_module):
     def __init__(self, *args, **kwargs) -> None:
         config = (
             os.path.dirname(__file__)
@@ -95,13 +95,13 @@ class paddle_cdla_model(base_module):
         pred = self.trainer.predict(path)
         result = []
         pred = pred[0]["bbox"]
-        mask = pred[:, 1] > 0.5
+        mask = pred[:, 1] > 0.25
         pred = pred[mask]
         for item in pred:
             cls, score, x1, y1, x2, y2 = item
             x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
             cls = self.labels[int(cls)]
-            b = {"type": cls, "box": [x1, y1, x2, y2], "score": score}
+            b = {"type": cls, "box": [x1, y1, x2, y2], "score": float(score)}
             result.append(b)
 
         return (result, image)

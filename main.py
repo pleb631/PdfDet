@@ -17,9 +17,9 @@ def parse_args():
         type=str,
         default="paddle_cdla_model",
         choices=[
-            "paddle_pub_model",
-            "paddle_cdla_model",
-            "cnstd_model",
+            "paddle_pub",
+            "paddle_cdla",
+            "cnstd_yolov7",
         ],
     )
     parser.add_argument(
@@ -38,6 +38,7 @@ def main():
     doc = model(path=args.path)
     if isinstance(doc, Layer):
         im = doc.imshow()
+        im = cv2.resize(im,(640,640))
         cv2.imshow("im", im)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
@@ -47,6 +48,7 @@ def main():
         for i in layers:
             layer = getattr(doc, i)
             im = layer.imshow()
+            im = cv2.resize(im,(640,640))
             cv2.imshow("im", im)
             cv2.waitKey(0)
         cv2.destroyAllWindows()

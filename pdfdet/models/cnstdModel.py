@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 from .baseModel import base_module
 
 
-class cnstd_model(base_module):
+class cnstd_yolov7(base_module):
     def __init__(self, *args) -> None:
         self.analyzer = LayoutAnalyzer(
             "layout",
@@ -24,13 +24,13 @@ class cnstd_model(base_module):
         elif not isinstance(image, np.ndarray):
             raise NotImplementedError
 
-        pred = self.analyzer.analyze(image)
+        pred = self.analyzer.analyze(image,conf_threshold=0.25)
         result = []
         for box in pred:
             b = {
                 "type": box["type"],
                 "box": box["box"][[0, 2]].reshape(-1).tolist(),
-                "score": box["score"],
+                "score": float(box["score"]),
             }
             result.append(b)
 
