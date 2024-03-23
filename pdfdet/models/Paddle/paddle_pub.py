@@ -7,9 +7,9 @@ import sys
 parent_path = os.path.abspath(os.path.join(__file__, *([".."] * 1)))
 sys.path.insert(0, parent_path)
 
-from .paddle_cdla import paddle_cdla_model
+from .paddle_cdla import paddle_cdla_model,Trainer
 from ppdet.core.workspace import load_config
-from ppdet.engine import Trainer
+
 
 
 class paddle_pub_model(paddle_cdla_model):

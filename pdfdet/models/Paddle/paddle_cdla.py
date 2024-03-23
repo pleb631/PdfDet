@@ -13,8 +13,32 @@ sys.path.insert(0, parent_path)
 
 from pdfdet.models.baseModel import base_module
 from ppdet.core.workspace import load_config
-from ppdet.engine import Trainer
+from ppdet.engine import Trainer as Trainer1
+from ppdet.core.workspace import create
 
+class Trainer(Trainer1):
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+
+    def predict(self,
+                images):
+
+        self.dataset.set_images(images)
+        loader = create('TestReader')(self.dataset, 0)
+
+        # Run Infer 
+        self.model.eval()
+        results = []
+        for step_id, data in enumerate(loader):
+            # forward
+            outs = self.model(data)
+
+            for key, value in outs.items():
+                if hasattr(value, 'numpy'):
+                    outs[key] = value.numpy()
+            results.append(outs)
+
+        return results
 
 class paddle_cdla_model(base_module):
     def __init__(self, *args, **kwargs) -> None:

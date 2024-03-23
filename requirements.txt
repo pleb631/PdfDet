@@ -1,7 +1,9 @@
+cnstd
 paddlepaddle==2.6.0
+paddledet==2.6.0
+PyMuPDF==1.23.26
 tqdm
 opencv-python
-PyMuPDF==1.23.26
 pyyaml
 requests
 six
@@ -10,4 +12,3 @@ scikit-learn
 pycocotools
 pandas
 shapely
-cnstd
