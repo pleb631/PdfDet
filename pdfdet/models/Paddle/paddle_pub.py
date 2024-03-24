@@ -17,10 +17,8 @@ class paddle_pub(paddle_cdla):
             os.path.dirname(__file__)
             + r"/configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout1.yml"
         )
-        weight = (
-            os.path.dirname(__file__)
-            + r"/weights/picodet_lcnet_x1_0_fgd_layout_pub.pdparams"
-        )
+        weight = os.path.join(os.path.dirname(__file__),"weights/picodet_lcnet_x1_0_fgd_layout_pub.pdparams")
+        
         self.labels = {0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"}
 
         self.init(config, weight)

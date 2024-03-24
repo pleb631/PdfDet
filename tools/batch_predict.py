@@ -28,6 +28,7 @@ def parse_args():
             "paddle_pub",
             "paddle_cdla",
             "cnstd_yolov7",
+            "yolov8"
         ],
     )
     parser.add_argument(

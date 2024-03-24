@@ -4,6 +4,7 @@ name2func = {
     "cnstd_yolov7": "pdfdet.models.cnstdModel",
     "paddle_pub": "pdfdet.models.Paddle",
     "paddle_cdla": "pdfdet.models.Paddle",
+    "yolov8":"pdfdet.models.yolov8",
 }
 
 

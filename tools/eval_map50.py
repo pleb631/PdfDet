@@ -5,6 +5,8 @@ import numpy as np
 import cv2
 import pprint
 
+from pdfdet.utils.DetMetrics import DetMetrics,process_batch
+
 def read_json(json_path, mode='all'):
     '''读取json文件
 
@@ -51,6 +53,9 @@ def get_pred_from_file(path,category):
     for item in content:
         type1 = item["label"].lower()
         type1= '_'.join(type1.split())
+        if type1 not in category:
+            tp = {'footnote':"footer","formula":"equation",'page-footer':"footer",'page-header':"header",'picture':"figure",'section-header':"header",'caption':"figure_caption",'list-item':"text"}
+            type1 = tp[type1]
         cls = category.index(type1)
         boxes.append([*item["box"],item['score'],cls])
         
@@ -61,12 +66,12 @@ def imread(path, flags=cv2.IMREAD_COLOR):
 
 if __name__=='__main__':
     root = r'E:\project\code\labelme\Layout-Analysis-main\Layout-Analysis-main\layout_modify'
-    pred_dir = r'E:\project\code\PdfDet\result\yolov5'
+    pred_dir = r'E:\project\code\PdfDet\result\yolov8l'
     category = ["text","title","figure","figure_caption","table","table_caption","header","footer","reference","equation"]
     
     root = Path(root)
     pred_dir = Path(pred_dir)
-    from DetMetrics import DetMetrics,process_batch
+    
     metrics = DetMetrics(names=category, plot=False)
     
     items = root.rglob('*.png')

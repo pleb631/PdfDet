@@ -15,11 +15,12 @@ def parse_args():
     parser.add_argument(
         "--model",
         type=str,
-        default="paddle_cdla_model",
+        default="paddle_cdla",
         choices=[
             "paddle_pub",
             "paddle_cdla",
             "cnstd_yolov7",
+            "yolov8"
         ],
     )
     parser.add_argument(

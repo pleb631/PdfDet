@@ -59,10 +59,7 @@ class paddle_cdla(base_module):
             os.path.dirname(__file__)
             + r"/configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml"
         )
-        weight = (
-            os.path.dirname(__file__)
-            + r"/weights/picodet_lcnet_x1_0_fgd_layout_cdla.pdparams"
-        )
+        weight = os.path.join(os.path.dirname(__file__),"weights/picodet_lcnet_x1_0_fgd_layout_cdla.pdparams")
 
         self.labels = {
             0: "Text",
