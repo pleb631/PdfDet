@@ -29,14 +29,15 @@ python tools/eval_map50.py "gt_root" "res_root"
 python tools/visualize.py "image_path" "res_path"
 ```
 
-## 模型
+## Models
 
-| 模型         | 来源   | 关联数据集        | map50:95 | p      | r      |
-| ------------ | ------ | ----------------- | -------- | ------ | ------ |
-| paddle_pub   | paddle | PubLayNet(English) | 0.0486   | 0.1133 | 0.1000 |
-| paddle_cdla  | paddle | CDLA(Chinese)      | 0.5717   | 0.5853 | 0.6248 |
-| cnstd_yolov7 | cnstd  | CDLA              | 0.5034   | 0.6278 | 0.5651 |
-| yolov8       | [huggingface](https://huggingface.co/egis-group/LayoutDetection)      | DocLayNet(English, German,French, Japanese)                 | 0.2483   | 0.3785 | 0.3333 |
+| **Model** | **Source** | **Associated Dataset** | **map50:95** | **p** | **r** |
+|---|---|---|---|---|---|
+| **paddle_pub** | [PaddlePaddle](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/layout/README_ch.md) | PubLayNet(English) | 0.0486 | 0.1133 | 0.1000 |
+| **paddle_cdla** | [PaddlePaddle](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/layout/README_ch.md) | CDLA(Chinese) | 0.5717 | 0.5853 | 0.6248 |
+| **cnstd_yolov7** | [CNSTD](https://github.com/breezedeus/cnstd) | CDLA | 0.5034 | 0.6278 | 0.5651 |
+| **yolov8** | [huggingface](https://huggingface.co/egis-group/LayoutDetection) | DocLayNet(English, German,French, Japanese) | 0.2483 | 0.3785 | 0.3333 |
+
 
 [Test Dataset](https://github.com/Ontheroad123/Layout-Analysis/tree/main/layout_modify)
 
