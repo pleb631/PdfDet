@@ -4,11 +4,3 @@ paddledet==2.6.0
 PyMuPDF==1.23.26
 tqdm
 opencv-python
-pyyaml
-requests
-six
-scipy
-scikit-learn
-pycocotools
-pandas
-shapely

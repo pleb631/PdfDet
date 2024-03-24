@@ -1,12 +1,16 @@
 # https://huggingface.co/egis-group/LayoutDetection
 
 import numpy as np
-import warnings
-from ultralytics.models.yolo.detect import DetectionPredictor
-from pathlib import Path
-
-warnings.filterwarnings("ignore")
 import os
+from pathlib import Path
+try:
+    import ultralytics
+except:
+    os.system('pip install ultralytics')
+
+from ultralytics.models.yolo.detect import DetectionPredictor
+
+
 
 from .baseModel import base_module
 from pdfdet.utils.utils import safe_download
