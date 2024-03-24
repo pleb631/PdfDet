@@ -10,7 +10,6 @@ from pdfdet.utils.instance import Bbox, Layer, Document
 
 
 class base_module(metaclass=ABCMeta):
-
     image_format = [".jpg", ".png", ".jpeg", ".bmp"]
 
     def imread(self, path, flags=cv2.IMREAD_COLOR):
@@ -22,15 +21,13 @@ class base_module(metaclass=ABCMeta):
         elif path is not None:
             if Path(path).suffix.lower() == ".pdf":
                 return self.pdf_predict(pdf_path=path, *args, **kwargs)
-
             elif Path(path).suffix.lower() in base_module.image_format:
                 return self.single_predict(path=path, *args, **kwargs)
             else:
                 raise ValueError("Unsupported file format")
 
     def single_predict(self, *args, **kwargs):
-
-        preds,image = self.predict(*args, **kwargs)
+        preds, image = self.predict(*args, **kwargs)
         result = []
         for p in preds:
             label, box, score = (
@@ -39,13 +36,24 @@ class base_module(metaclass=ABCMeta):
                 p.get("score", None),
             )
             result.append(Bbox.from_xyxy(*box, label, score))
-
         return Layer(result, image)
 
     @abstractmethod
-    def predict(self, *args, **kwargs): ...
+    def predict(self, *args, **kwargs):
+        pass
 
     def pdf_predict(self, pdf_path, *args, **kwargs):
+        """
+        Predict on a PDF file.
+
+        Args:
+            pdf_path (str): Path to the PDF file.
+            *args: Variable length argument list.
+            **kwargs: Arbitrary keyword arguments.
+
+        Returns:
+            Document: Annotated document with predictions.
+        """
         from pdfdet.utils.utils import pdf2png
 
         pdf_name = os.path.splitext(os.path.basename(pdf_path))[0]

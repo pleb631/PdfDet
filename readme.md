@@ -1,8 +1,8 @@
-# pdfdet: pdf文件版面检测工具箱
+# pdfdet: PDF Layout Detection Toolbox
 
 ![效果1](./source/1.jpg)
 
-## 环境要求
+## Requirements
 
 python>=3.10
 
@@ -10,23 +10,36 @@ python>=3.10
 python -m pip install -r requirements.txt
 ```
 
-## 使用
+## Usage
 
-```shell
+### Simple Operations
+
+```bash
 python main.py
+```
+
+### Batch Operations
+
+```bash
+# batch predict
+python tools/batch_process.py --model "model_name" --src "image_root" --save "res_root"
+# evaluate dataset
+python tools/eval_map50.py "gt_root" "res_root"
+# generate visualize result
+python tools/visualize.py "image_path" "res_path"
 ```
 
 ## 模型
 
 | 模型         | 来源   | 关联数据集        | map50:95 | p      | r      |
 | ------------ | ------ | ----------------- | -------- | ------ | ------ |
-| paddle_pub   | paddle | PubLayNet（英文） | 0.0486   | 0.1133 | 0.1000 |
-| paddle_cdla  | paddle | CDLA（中文）      | 0.5717   | 0.5853 | 0.6248 |
+| paddle_pub   | paddle | PubLayNet(English) | 0.0486   | 0.1133 | 0.1000 |
+| paddle_cdla  | paddle | CDLA(Chinese)      | 0.5717   | 0.5853 | 0.6248 |
 | cnstd_yolov7 | cnstd  | CDLA              | 0.5034   | 0.6278 | 0.5651 |
-| yolov8       | [huggingface](https://huggingface.co/egis-group/LayoutDetection)      | -                 | 0.2483   | 0.3785 | 0.3333 |
+| yolov8       | [huggingface](https://huggingface.co/egis-group/LayoutDetection)      | DocLayNet(English, German,French, Japanese)                 | 0.2483   | 0.3785 | 0.3333 |
 
-[测试集](https://github.com/Ontheroad123/Layout-Analysis/tree/main/layout_modify)
+[Test Dataset](https://github.com/Ontheroad123/Layout-Analysis/tree/main/layout_modify)
 
-[评测代码来源](https://github.com/ultralytics/ultralytics/blob/2d513a9e4bf51e961a4199067383d2052f483874/ultralytics/utils/metrics.py#L620)
+[Evaluation Code Source](https://github.com/ultralytics/ultralytics/blob/2d513a9e4bf51e961a4199067383d2052f483874/ultralytics/utils/metrics.py#L620)
 
-**注**:不同数据集的标签形式不统一，标注策略也有差别，对比效果以可视化为主
+**Note**: Labels and annotation strategies vary across different datasets. Visual comparison should be the primary method for evaluating effectiveness.

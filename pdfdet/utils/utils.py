@@ -3,6 +3,8 @@ import fitz
 from pathlib import Path
 import torch
 import subprocess
+import cv2
+import numpy as np
 
 
 def pdf2png(pdf_path, save_dir):
@@ -10,20 +12,19 @@ def pdf2png(pdf_path, save_dir):
     pdf_name = os.path.splitext(os.path.basename(pdf_path))[0]
     for pg in range(pdfDoc.page_count):
         page = pdfDoc[pg]
-        pix = page.get_pixmap(alpha=False)   
+        pix = page.get_pixmap(alpha=False)
         if not save_dir.lstrip(pdf_name):
-            save_path = os.path.join(save_dir, pdf_name,f'{pg}.png')
+            save_path = os.path.join(save_dir, pdf_name, f"{pg}.png")
         else:
-            save_path = os.path.join(save_dir, f'{pg}.png')
-        os.makedirs(os.path.dirname(save_path),exist_ok=True)# 默认是720*x尺寸
-        pix._writeIMG(save_path,'png',100)
+            save_path = os.path.join(save_dir, f"{pg}.png")
+        os.makedirs(os.path.dirname(save_path), exist_ok=True)  # 默认是720*x尺寸
+        pix._writeIMG(save_path, "png", 100)
 
 
 def compute_color_for_labels(label):
-    palette = (2 ** 11 - 1, 2 ** 15 - 1, 2 ** 20 - 1)
-    color = [int((p * (label ** 2 - label + 1)) % 255) for p in palette]
+    palette = (2**11 - 1, 2**15 - 1, 2**20 - 1)
+    color = [int((p * (label**2 - label + 1)) % 255) for p in palette]
     return tuple(color)
-
 
 
 def curl_download(url, filename, *, silent: bool = False) -> bool:
@@ -57,7 +58,9 @@ def safe_download(file, url, url2=None, min_bytes=1e0, error_msg=""):
     if file.exists():
         return 0
     file.parent.mkdir(parents=True, exist_ok=True)
-    assert_msg = f"Downloaded file '{file}' does not exist or size is < min_bytes={min_bytes}"
+    assert_msg = (
+        f"Downloaded file '{file}' does not exist or size is < min_bytes={min_bytes}"
+    )
     try:  # url1
         print(f"Downloading {url} to {file}...")
         torch.hub.download_url_to_file(url, str(file))
@@ -73,3 +76,7 @@ def safe_download(file, url, url2=None, min_bytes=1e0, error_msg=""):
             if file.exists():
                 file.unlink()  # remove partial downloads
             print(f"ERROR: {assert_msg}\n{error_msg}")
+
+
+def imread(path, flags=cv2.IMREAD_COLOR):
+    return cv2.imdecode(np.fromfile(path, np.uint8), flags)
