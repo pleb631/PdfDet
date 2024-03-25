@@ -2,6 +2,10 @@ import argparse
 import tqdm
 from pathlib import Path
 import json
+import sys
+import os
+parent_path = os.path.abspath(os.path.join(__file__, *([".."] * 2)))
+sys.path.insert(0, parent_path)
 
 from pdfdet import uni_model
 
@@ -24,9 +28,8 @@ def parse_args():
         "--model",
         type=str,
         default="paddle_cdla",
-        choices=["paddle_pub", "paddle_cdla", "cnstd_yolov7", "yolov8"],
-        help="Choose the detection model: 'paddle_pub', 'paddle_cdla', 'cnstd_yolov7', 'yolov8'.",
-    )
+        choices=["paddle_pub", "paddle_cdla" "cnstd_yolov7", "yolov8m_cdla","yolov8n_cdla","yolov8l_doc","yolov8n_doc","yolov8s_doc"],
+        help="Choose the detection model")
     parser.add_argument(
         "--src",
         type=str,

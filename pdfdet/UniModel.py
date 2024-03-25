@@ -9,7 +9,11 @@ name2func = {
 
 
 def uni_model(name=None, *args, **kwargs):
-
+    name = name.lower()
+    if 'yolov8' in name:
+        kwargs["model_type"]=name
+        name = 'yolov8'
+        
     module = importlib.import_module(name2func[name])
     model = getattr(module, name)(*args, **kwargs)
 

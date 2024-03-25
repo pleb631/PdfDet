@@ -42,11 +42,13 @@ def get_label_from_file(path, category):
     labels = []
     if "shapes" in content and len(content["shapes"]) > 0:
         for shape in content["shapes"]:
-            point = shape["points"]
+            point = np.array(shape["points"])
+            x1,y1 = np.min(point,0)
+            x2,y2 = np.max(point,0)
             type1 = shape["label"].lower()
             type1 = "_".join(type1.split())
             cls = category.index(type1)
-            box = [cls, *point[0], *point[2]]
+            box = [cls, x1,y1,x2,y2]
             boxes.append(box)
     return np.array(boxes)
 
@@ -67,18 +69,6 @@ def get_pred_from_file(path, category):
     for item in content:
         type1 = item["label"].lower()
         type1 = "_".join(type1.split())
-        if type1 not in category:
-            tp = {
-                "footnote": "footer",
-                "formula": "equation",
-                "page-footer": "footer",
-                "page-header": "header",
-                "picture": "figure",
-                "section-header": "header",
-                "caption": "figure_caption",
-                "list-item": "text",
-            }
-            type1 = tp[type1]
         cls = category.index(type1)
         boxes.append([*item["box"], item["score"], cls])
     return np.array(boxes)
@@ -131,18 +121,32 @@ def main():
         gt = get_label_from_file(json_path, category)
         preds = get_pred_from_file(pred_path, category)
         correct_bboxes = np.zeros((len(preds), 10))
-        matches = np.empty((0, 2))
         stat = (correct_bboxes, np.empty(0), np.empty(0), np.empty(0))
+        
+        # im = cv2.imread(str(img_path))
+        # for b in preds:
+        #     x1, y1, x2, y2, score, cls = b
+        #     x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+        #     cv2.rectangle(im, (x1, y1), (x2, y2), (0, 255, 0), 2)
+        # for b in gt:
+        #     cls,x1,y1, x2, y2 = b
+        #     x1, y1, x2, y2 = int(x1), int(y1), int(x2), int(y2)
+        #     cv2.rectangle(im, (x1, y1), (x2, y2), (255, 255, 0), 2)
+        # im = cv2.resize(im,(640,640))
+        # cv2.imshow('im',im)
+        
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
 
-        if len(gt) > 0 and len(preds) == 0:
-            stat = (correct_bboxes, np.empty(0), np.empty(0), gt[:, 0])
-        elif len(preds) > 0 and len(gt) > 0:
-            correct_bboxes, matches = process_batch(preds, gt)
+        if len(preds)==0:
+            if len(gt):
+                stat = (correct_bboxes, np.empty(0), np.empty(0), gt[:, 0])
+                stats.append(stat)
+            continue
+        if len(gt):
+            correct_bboxes, _ = process_batch(preds, gt)
             stat = (correct_bboxes, preds[:, 4], preds[:, 5], gt[:, 0])
-        elif len(preds) > 0 and len(gt) == 0:
-            stat = (correct_bboxes, preds[:, 4], preds[:, 5], np.empty(0))
-
-        stats.append(stat)
+            stats.append(stat)
 
     stats = [np.concatenate(x, 0) for x in zip(*stats)]
     if len(stats) and stats[0].any():

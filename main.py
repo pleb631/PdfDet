@@ -15,8 +15,8 @@ def parse_args():
         "--model",
         type=str,
         default="paddle_cdla",
-        choices=["paddle_pub", "paddle_cdla", "cnstd_yolov7", "yolov8"],
-        help="Choose the detection model: 'paddle_pub', 'paddle_cdla', 'cnstd_yolov7', 'yolov8'.",
+        choices=["paddle_pub", "paddle_cdla" "cnstd_yolov7", "yolov8m_cdla","yolov8n_cdla","yolov8l_doc","yolov8n_doc","yolov8s_doc"],
+        help="Choose the detection model",
     )
     parser.add_argument(
         "--path",

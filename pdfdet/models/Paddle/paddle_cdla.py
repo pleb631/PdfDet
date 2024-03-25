@@ -29,17 +29,16 @@ class Trainer(Trainer1):
 
         # Run Infer
         self.model.eval()
-        results = []
-        for step_id, data in enumerate(loader):
-            # forward
-            outs = self.model(data)
 
-            for key, value in outs.items():
-                if hasattr(value, "numpy"):
-                    outs[key] = value.numpy()
-            results.append(outs)
 
-        return results
+        data = next(loader)
+        outs = self.model(data)
+
+        for key, value in outs.items():
+            if hasattr(value, "numpy"):
+                outs[key] = value.numpy()
+
+        return outs
 
 
 def attempt_download(weight):
@@ -91,7 +90,7 @@ class paddle_cdla(base_module):
         path = [path]
         pred = self.trainer.predict(path)
         result = []
-        pred = pred[0]["bbox"]
+        pred = pred["bbox"]
         mask = pred[:, 1] > 0.25
         pred = pred[mask]
         for item in pred:
@@ -119,3 +118,16 @@ class paddle_cdla(base_module):
             out = self.predict(path)
         os.remove(path)
         return out
+
+
+class paddle_pub(paddle_cdla):
+    def __init__(self, *args, **kwargs) -> None:
+        config = (
+            os.path.dirname(__file__)
+            + r"/configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout1.yml"
+        )
+        weight = os.path.join(os.path.dirname(__file__),"weights/picodet_lcnet_x1_0_fgd_layout_pub.pdparams")
+        
+        self.labels = {0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"}
+
+        self.init(config, weight)
