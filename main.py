@@ -5,7 +5,7 @@ import argparse
 root = os.path.dirname(__file__)
 
 from pdfdet import uni_model
-from pdfdet.utils.instance import Layer, Document
+from pdfdet.utils import Layer, Document
 
 
 def parse_args():

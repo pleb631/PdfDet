@@ -8,6 +8,7 @@ python>=3.10
 
 ```shell
 python -m pip install -r requirements.txt
+pip install .
 ```
 
 ## Usage
@@ -15,18 +16,36 @@ python -m pip install -r requirements.txt
 ### Simple Operations
 
 ```bash
-python main.py
+python main.py --path "pdf_path"
 ```
 
-### Batch Operations
+You can also import a model directly via its full name and then call its `__call__` method with pdf path or image path.
+
+```python
+from pdfdet import uni_model
+model = uni_model(name='yolov8m_cdla')
+doc = model(path="pdf_path")
+layers = sorted(doc.layers, key=lambda x: int(x))
+for i in layers:
+    layer = getattr(doc, i)
+    im = layer.imshow()
+    im = cv2.resize(im, (640, 640))
+    cv2.imshow("im", im)
+    cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+```
+
+### Batch processing
 
 ```bash
 # batch predict
 python tools/batch_process.py --model "model_name" --src "image_root" --save "res_root"
-# evaluate cdla dataset(labelme)
-python tools/eval_map50.py "gt_root" "res_root"
 # generate visualize result
 python tools/visualize.py "image_path" "res_path"
+#
+# evaluate cdla dataset(labelme format)
+python tools/eval_map50.py "gt_root" "res_root"
 ```
 
 ## Models

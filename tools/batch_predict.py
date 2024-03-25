@@ -2,10 +2,7 @@ import argparse
 import tqdm
 from pathlib import Path
 import json
-import sys
-import os
-parent_path = os.path.abspath(os.path.join(__file__, *([".."] * 2)))
-sys.path.insert(0, parent_path)
+
 
 from pdfdet import uni_model
 

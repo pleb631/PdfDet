@@ -6,7 +6,7 @@ import tempfile
 import os
 import tqdm
 
-from pdfdet.utils.instance import Bbox, Layer, Document
+from pdfdet.utils import Bbox, Layer, Document
 
 
 class base_module(metaclass=ABCMeta):
@@ -54,7 +54,7 @@ class base_module(metaclass=ABCMeta):
         Returns:
             Document: Annotated document with predictions.
         """
-        from pdfdet.utils.utils import pdf2png
+        from pdfdet.utils import pdf2png
 
         pdf_name = os.path.splitext(os.path.basename(pdf_path))[0]
         pdf_content = Document()

@@ -5,10 +5,7 @@ import numpy as np
 import cv2
 import pprint
 import argparse
-import sys
 
-parent_path = os.path.abspath(os.path.join(__file__, *([".."] * 2)))
-sys.path.insert(0, parent_path)
 
 from pdfdet.utils.DetMetrics import DetMetrics, process_batch
 

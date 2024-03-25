@@ -1,22 +1,19 @@
 import warnings
-import tempfile
 
 warnings.filterwarnings("ignore")
+import tempfile
 import os
 import cv2
-import sys
 import numpy as np
+from pathlib import Path
 from ppdet.core.workspace import load_config
 from ppdet.engine import Trainer as Trainer1
 from ppdet.core.workspace import create
-from pathlib import Path
-
-parent_path = os.path.abspath(os.path.join(__file__, *([".."] * 1)))
-sys.path.insert(0, parent_path)
 
 
 from pdfdet.models.baseModel import base_module
-from pdfdet.utils.utils import safe_download
+from pdfdet.utils import safe_download
+
 
 class Trainer(Trainer1):
     def __init__(self, *args, **kwargs) -> None:
@@ -30,7 +27,6 @@ class Trainer(Trainer1):
         # Run Infer
         self.model.eval()
 
-
         data = next(loader)
         outs = self.model(data)
 
@@ -43,22 +39,25 @@ class Trainer(Trainer1):
 
 def attempt_download(weight):
     name = Path(weight).stem
-    if name=='picodet_lcnet_x1_0_fgd_layout_cdla':
-        url='https://github.com/pleb631/PdfDet/releases/download/v0.0.1/picodet_lcnet_x1_0_fgd_layout_cdla.pdparams'
-    elif name=='picodet_lcnet_x1_0_fgd_layout_pub':
-            url = 'https://github.com/pleb631/PdfDet/releases/download/v0.0.1/picodet_lcnet_x1_0_fgd_layout_pub.pdparams'
+    if name == "picodet_lcnet_x1_0_fgd_layout_cdla":
+        url = "https://github.com/pleb631/PdfDet/releases/download/v0.0.1/picodet_lcnet_x1_0_fgd_layout_cdla.pdparams"
+    elif name == "picodet_lcnet_x1_0_fgd_layout_pub":
+        url = "https://github.com/pleb631/PdfDet/releases/download/v0.0.1/picodet_lcnet_x1_0_fgd_layout_pub.pdparams"
     else:
         raise ValueError()
     safe_download(file=weight, url=url)
-    
-    
+
+
 class paddle_cdla(base_module):
     def __init__(self, *args, **kwargs) -> None:
         config = (
             os.path.dirname(__file__)
             + r"/configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout.yml"
         )
-        weight = os.path.join(os.path.dirname(__file__),"weights/picodet_lcnet_x1_0_fgd_layout_cdla.pdparams")
+        weight = os.path.join(
+            os.path.dirname(__file__),
+            "weights/picodet_lcnet_x1_0_fgd_layout_cdla.pdparams",
+        )
 
         self.labels = {
             0: "Text",
@@ -126,8 +125,11 @@ class paddle_pub(paddle_cdla):
             os.path.dirname(__file__)
             + r"/configs/picodet/legacy_model/application/layout_analysis/picodet_lcnet_x1_0_layout1.yml"
         )
-        weight = os.path.join(os.path.dirname(__file__),"weights/picodet_lcnet_x1_0_fgd_layout_pub.pdparams")
-        
+        weight = os.path.join(
+            os.path.dirname(__file__),
+            "weights/picodet_lcnet_x1_0_fgd_layout_pub.pdparams",
+        )
+
         self.labels = {0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"}
 
         self.init(config, weight)
