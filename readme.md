@@ -23,7 +23,7 @@ python main.py
 ```bash
 # batch predict
 python tools/batch_process.py --model "model_name" --src "image_root" --save "res_root"
-# evaluate dataset
+# evaluate cdla dataset(labelme)
 python tools/eval_map50.py "gt_root" "res_root"
 # generate visualize result
 python tools/visualize.py "image_path" "res_path"
