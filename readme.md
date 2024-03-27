@@ -21,20 +21,39 @@ python main.py --path "pdf_path"
 
 You can also import a model directly via its full name and then call its `__call__` method with pdf path or image path.
 
-```python
-from pdfdet import uni_model
-model = uni_model(name='yolov8m_cdla')
-doc = model(path="pdf_path")
-layers = sorted(doc.layers, key=lambda x: int(x))
-for i in layers:
-    layer = getattr(doc, i)
-    im = layer.imshow()
-    im = cv2.resize(im, (640, 640))
-    cv2.imshow("im", im)
-    cv2.waitKey(0)
-cv2.destroyAllWindows()
+- Layer
 
-```
+    ```python
+    from pdfdet import uni_model
+    model = uni_model(name='yolov8m_cdla')
+    layer = model(path="image_path")
+    content  = layer.to_json()
+    """
+    content format:
+    {
+        "image": numpy.ndarray,
+        "boxes": [{"box": [x1, y1, x2, y2], "label": str, "score": float}, ...],
+    }
+    """
+    ```
+
+- Document
+
+    ```python
+    from pdfdet import uni_model
+    import cv2
+    model = uni_model(name='yolov8m_cdla')
+    doc = model(path="pdf_path")
+    layers = sorted(doc.layers, key=lambda x: int(x))
+    for i in layers:
+        layer = getattr(doc, i)
+        im = layer.imshow()
+        im = cv2.resize(im, (640, 640))
+        cv2.imshow("im", im)
+        cv2.waitKey(0)
+    cv2.destroyAllWindows()
+
+    ```
 
 ### Batch processing
 
