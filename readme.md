@@ -69,15 +69,15 @@ python tools/eval_map50.py "gt_root" "res_root"
 
 ## Models
 
-| **Model**        | **Source**                                                                                                 | **Associated Dataset**                      |
-| ---------------- | ---------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
-| **paddle_pub**   | [PaddlePaddle](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/layout/README_ch.md) | PubLayNet(English)                          |
-| **paddle_cdla**  | [PaddlePaddle](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/layout/README_ch.md) | CDLA(Chinese)                               |
-| **cnstd_yolov7** | [CNSTD](https://github.com/breezedeus/cnstd)                                                               | CDLA                                        |
-| **yolov8l_doc**  | [huggingface](https://huggingface.co/egis-group/LayoutDetection)                                           | DocLayNet(English, German,French, Japanese) |
-| **yolov8m_cdla** | [layout_analysis](https://github.com/jiangnanboy/layout_analysis)                                          | CDLA                                        |
+| **Model** | **Source** | **Associated Dataset** | optional model |
+|---|---|---|---|
+| **paddle_pub** | [PaddlePaddle](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/layout/README_ch.md) | PubLayNet(English) |  |
+| **paddle_cdla** | [PaddlePaddle](https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.6/ppstructure/layout/README_ch.md) | CDLA(Chinese) |  |
+| **cnstd_yolov7** | [CNSTD](https://github.com/breezedeus/cnstd) | CDLA |  |
+| **yolov8l_doc** | [huggingface](https://huggingface.co/egis-group/LayoutDetection) | DocLayNet(English, German,French, Japanese) | yolov8n_doc,yolov8s_doc |
+| **yolov8m_cdla** | [layout_analysis](https://github.com/jiangnanboy/layout_analysis) | CDLA | yolov8n_cdla |
 
-[Evaluation Code Source](https://github.com/ultralytics/ultralytics/blob/2d513a9e4bf51e961a4199067383d2052f483874/ultralytics/utils/metrics.py#L620)
+[Evaluation Code Source](https://github.com/ultralytics/ultralytics/blob/v8.1.0/ultralytics/utils/metrics.py#L528)
 
 **Note**: Labels and annotation strategies vary across different datasets. Visual comparison should be the primary method for evaluating effectiveness.
 
