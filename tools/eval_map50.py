@@ -3,7 +3,7 @@ from pathlib import Path
 import json
 import numpy as np
 import cv2
-import pprint
+from prettytable import PrettyTable
 import argparse
 
 
@@ -149,7 +149,10 @@ def main():
     if len(stats) and stats[0].any():
         metrics.process(*stats)
     result = metrics.results_dict
-    pprint.pprint(result)
+    tb = PrettyTable()
+    tb.field_names = result.keys()
+    tb.add_row(result.values())
+    print(tb)
 
 
 if __name__ == "__main__":
