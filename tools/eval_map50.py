@@ -143,7 +143,7 @@ def main():
         if len(gt):
             correct_bboxes, _ = process_batch(preds, gt)
             stat = (correct_bboxes, preds[:, 4], preds[:, 5], gt[:, 0])
-            stats.append(stat)
+        stats.append(stat)
 
     stats = [np.concatenate(x, 0) for x in zip(*stats)]
     if len(stats) and stats[0].any():
